@@ -1,0 +1,1 @@
+I will be rewriting backend code every day until I have learned everything that has been taught by my instructor in Cohort 2.0
