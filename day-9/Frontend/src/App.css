@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  background-color: #2e2e2e;
+}
+
+.nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.node {
+  background-color: #414141;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  /* width: calc(33.333% - 40px); */
+}
