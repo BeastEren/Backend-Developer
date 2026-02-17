@@ -1,6 +1,7 @@
 const express = require('express');
 const userModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
+
 const authRouter = express.Router()  // creating a router for auth. related routes and express.Router() allows us to write routs in other file other than app.js and then we can export it and use it in app.js
 
 authRouter.post('/register', async (req, res) => {
