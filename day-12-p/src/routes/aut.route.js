@@ -19,7 +19,7 @@ autRoute.post('/reg', async (req, res) => {
     const hashPassword = crypto.createHash('sha256').update(userPassword).digest('hex');
 
     const userReg = await userModel.create({ userName, userEmailID, userPassword: hashPassword });
-    const token = jwt.sign({ userID: userReg._id }, process.env.JWT_TOKEN);
+    const token = jwt.sign({ userID: userReg._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
     res.cookie('token_jwt', token);
 
     res.status(201).json({
@@ -30,17 +30,28 @@ autRoute.post('/reg', async (req, res) => {
 })
 
 autRoute.get('/get-me', async (req, res) => {
-    const token = req.cookies.token_jwt;
+    try {
+        const token = req.cookies && req.cookies.token_jwt;
+        if (!token) return res.status(401).json({ message: 'No token provided' });
 
-    const checkToken = jwt.verify(token, process.env.JWT_TOKEN);
+        let payload;
+        try {
+            payload = jwt.verify(token, process.env.JWT_TOKEN);
+        } catch (err) {
+            return res.status(401).json({ message: 'Invalid token' });
+        }
 
-    const user = await userModel.findById(checkToken.userID);
+        const user = await userModel.findById(payload.userID);
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
-    res.status(200).json({
-        message: 'found the user',
-        user: user.userName,
-        email: user.userEmailID
-    })
+        res.status(200).json({
+            message: 'found the user',
+            user: user.userName,
+            email: user.userEmailID
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
 })
 
 autRoute.post('/login', async (req, res) => {
@@ -61,12 +72,15 @@ autRoute.post('/login', async (req, res) => {
         })
     }
 
-    const token = jwt.sign({ userID: user._id }, process.env.JWT_TOKEN);
+    const token = jwt.sign({ userID: user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
     res.cookie('token_jwt', token);
 
-    res.status(201).json({
-        message: 'Nice U are LOGINED now',
-        userReg,
+    res.status(200).json({
+        message: 'Nice U are LOGGED IN now',
+        user: {
+            userName: user.userName,
+            userEmailID: user.userEmailID
+        },
         token
     })
 

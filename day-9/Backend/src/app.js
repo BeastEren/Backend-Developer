@@ -39,7 +39,7 @@ app.delete('/api/nodes/:id', async (req, res) => {
         message: 'Node deleted successfully',
         node
     })
-});
+})
 
 app.patch('/api/nodes/:id', async (req, res) => {
     const id = req.params.id; // we can also write const { id } = req.params;
