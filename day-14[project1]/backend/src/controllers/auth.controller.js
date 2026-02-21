@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
+// const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 const userModel = require('../models/user.model');
 
 async function regesterController(req, res) {
@@ -17,7 +18,8 @@ async function regesterController(req, res) {
         })
     }
 
-    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    // const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = await userModel.create({ username, email, password: hashedPassword, bio, profileInage });
     const token = jwt.sign({ userID: user._id }, process.env.JWT_TOKEN, { expiresIn: '1d' });
     res.cookie('token', token);
@@ -50,9 +52,10 @@ async function loginController(req, res) {
         })
     }
 
-    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    // const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    // const isPasswordMatch = hashedPassword === isUserExists.password;
 
-    const isPasswordMatch = hashedPassword === isUserExists.password;
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
         return res.status(401).json({
             message: "Passowrd wrong"
