@@ -55,7 +55,7 @@ async function loginController(req, res) {
     // const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
     // const isPasswordMatch = hashedPassword === isUserExists.password;
 
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    const isPasswordMatch = await bcrypt.compare(password, isUserExists.password);
     if (!isPasswordMatch) {
         return res.status(401).json({
             message: "Passowrd wrong"
