@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     bio: String,
     profileInage: {
         type: String,
-        default: ""
+        default: "https://ik.imagekit.io/gt4igjutv/user-default.jpg" // For some reason it's not working...?
     }
 });
 

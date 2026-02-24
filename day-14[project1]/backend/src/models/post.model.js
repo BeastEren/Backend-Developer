@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema({
     caption: {
         type: String,
-        default: ""
+        default: "A default post-caption" //for some reason it' not working...?
     },
     imgUrl: {
         type: String,
