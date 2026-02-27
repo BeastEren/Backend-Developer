@@ -4,11 +4,11 @@ const bcrypt = require('bcryptjs');
 const userModel = require('../models/user.model');
 
 async function regesterController(req, res) {
-    const { username, email, password, bio, profileInage } = req.body;
+    const { userName, email, password, bio, profileImage } = req.body;
 
     const isUserExists = await userModel.findOne({
         $or: [
-            { username },
+            { userName },
             { email }
         ]
     })
@@ -20,28 +20,28 @@ async function regesterController(req, res) {
 
     // const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await userModel.create({ username, email, password: hashedPassword, bio, profileInage });
-    const token = jwt.sign({ userID: user._id }, process.env.JWT_TOKEN, { expiresIn: '1d' });
+    const user = await userModel.create({ userName, email, password: hashedPassword, bio, profileImage });
+    const token = jwt.sign({ userID: user._id, userName: user.userName }, process.env.JWT_TOKEN, { expiresIn: '1d' });
     res.cookie('token', token);
 
     res.status(201).json({
         message: "New User created...",
         user: {
-            userName: user.username,
+            userName: user.userName,
             email: user.email,
             bio: user.bio,
-            profileInage: user.profileInage
+            profileImage: user.profileImage
         },
         token
     })
 }
 
 async function loginController(req, res) {
-    const { username, email, password } = req.body;
+    const { userName, email, password } = req.body;
 
     const isUserExists = await userModel.findOne({
         $or: [
-            { username: username },
+            { userName: userName },
             { email: email }
         ]
     });
@@ -62,15 +62,15 @@ async function loginController(req, res) {
         })
     }
 
-    const token = jwt.sign({ userID: isUserExists._id }, process.env.JWT_TOKEN, { expiresIn: '1d' });
+    const token = jwt.sign({ userID: isUserExists._id, userName: isUserExists.userName }, process.env.JWT_TOKEN, { expiresIn: '1d' });
     res.cookie("token", token);
     res.status(200).json({
         message: "User Found and Logined",
         user: {
-            userName: isUserExists.username,
+            userName: isUserExists.userName,
             email: isUserExists.email,
             bio: isUserExists.bio,
-            profileInage: isUserExists.profileInage
+            profileImage: isUserExists.profileImage
         }
     })
 }

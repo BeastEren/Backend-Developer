@@ -7,8 +7,8 @@ const postRouter = express.Router();
 const upload = multer({ storage: multer.memoryStorage() })
 
 postRouter.post('/', upload.single('image'), identifyUser, postController.createPostController);
-
 postRouter.get('/', identifyUser, postController.getPostController);
-
 postRouter.get('/details/:postID', identifyUser, postController.getPostDetailsController);
+postRouter.post('/like/:postID', identifyUser, postController.likePostController);
+
 module.exports = postRouter;
