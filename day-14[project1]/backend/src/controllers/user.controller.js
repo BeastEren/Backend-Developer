@@ -65,12 +65,16 @@ async function unfollowUserController(req, res) {
 
 async function followResponseController(req, res) {
     const userFollowee = req.user.userName;
-    // const response = req.params.response;
     const { userFollower, response } = req.body;
 
     if (response !== 'accepted' && response !== 'rejected') {
         return res.status(400).json({
             message: "Wrong Response"
+        })
+    }
+    if (userFollowee === userFollower) {
+        return res.status(400).json({
+            message: "You can't respond to yourself"
         })
     }
 

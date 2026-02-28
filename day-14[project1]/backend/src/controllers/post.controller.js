@@ -23,9 +23,9 @@ async function createPostController(req, res) {
         user: req.user.userID //"req.user" is equal to "decode" coming from middleware
     })
 
-    console.log('====================================');
-    console.log(file);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log(file);
+    // console.log('====================================');
 
     res.status(201).json({
         message: 'Post created successfully',
