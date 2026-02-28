@@ -63,7 +63,51 @@ async function unfollowUserController(req, res) {
     })
 }
 
+async function followResponseController(req, res) {
+    const userFollowee = req.user.userName;
+    // const response = req.params.response;
+    const { userFollower, response } = req.body;
+
+    if (response !== 'accepted' && response !== 'rejected') {
+        return res.status(400).json({
+            message: "Wrong Response"
+        })
+    }
+
+    const followData = await followModel.findOne({
+        follower: userFollower,
+        followee: userFollowee
+    });
+    if (!followData) {
+        return res.status(404).json({
+            message: 'No follow request found'
+        })
+    }
+    // if (followData.followee !== req.user.userName) {
+    //     return res.status(403).json({
+    //         message: "Not authorized to respond"
+    //     });
+    // } //it will be true 100% of the time
+    if (followData.status !== "pending") {
+        return res.status(400).json({
+            message: "Request already responded"
+        });
+    }
+
+    const updatedFollow = await followModel.findOneAndUpdate(
+        { _id: followData._id },
+        { status: response },
+        { new: true }
+    );
+    // const updateStatus = await followModel.findOneAndUpdate({ _id: followData._id }, { status: response });
+
+    res.status(200).json({
+        message: `Follow response ${response}`
+    })
+}
+
 module.exports = {
     followUserController,
-    unfollowUserController
+    unfollowUserController,
+    followResponseController
 }

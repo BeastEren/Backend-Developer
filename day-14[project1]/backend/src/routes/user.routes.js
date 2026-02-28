@@ -6,5 +6,6 @@ const userRoutes = express.Router();
 
 userRoutes.post('/follow/:userName', identifyUser, userController.followUserController)
 userRoutes.post('/unFollow/:userName', identifyUser, userController.unfollowUserController);
+userRoutes.post('/follow/response',identifyUser,userController.followResponseController)
 
 module.exports = userRoutes;
