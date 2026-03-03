@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const userModel = require('../models/user.model');
 
-async function regesterController(req, res) {
+async function registerController(req, res) {
     const { userName, email, password, bio, profileImage } = req.body;
 
     const isUserExists = await userModel.findOne({
@@ -76,6 +76,6 @@ async function loginController(req, res) {
 }
 
 module.exports = {
-    regesterController,
+    registerController,
     loginController
 }
