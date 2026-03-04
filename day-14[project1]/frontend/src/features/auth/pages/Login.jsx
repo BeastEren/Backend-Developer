@@ -1,21 +1,26 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth'; //custom hook to access auth context
 import '../styles/form.scss';
 
 function Login() {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
+    const { handleLogin, loading } = useAuth(); //custom hook to access auth context
+    const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    if (loading) {
+        return <h1>Loading...</h1>;
+    }
+
+    const handleSubmit = (e) => {
         e.preventDefault();
 
-        await axios.post("http://localhost:3000/api/auth/login", {
-            userName,
-            password
-        }, { withCredentials: true })
-            .then(response => console.log(response.data))
-            .catch(error => console.error("There was an error logging in!", error));
+        handleLogin(userName, password)
+            .then(() => {
+                console.log("Login successful!");
+                navigate("/");
+            });
 
         setUserName("");
         setPassword("");

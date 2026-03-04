@@ -1,9 +1,12 @@
 import AppRoutes from "./AppRoutes";
+import { AuthProvider } from "./features/auth/auth.context";
 import './styles.scss';
 function App() {
   return (
     <>
-      <AppRoutes />
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </>
   )
 }
