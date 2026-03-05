@@ -4,27 +4,32 @@ import { useAuth } from '../hooks/useAuth'; //custom hook to access auth context
 import '../styles/form.scss';
 
 function Login() {
+    const navigate = useNavigate();
+
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
-    const { handleLogin, loading } = useAuth(); //custom hook to access auth context
-    const navigate = useNavigate();
+
+    const { user, loading, handleLogin } = useAuth(); //custom hook to access auth context
 
     if (loading) {
         return <h1>Loading...</h1>;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        handleLogin(userName, password)
-            .then(() => {
-                console.log("Login successful!");
-                navigate("/");
-            });
+        try {
+            await handleLogin(userName, password);
+            console.log("Login successful!");
+            navigate("/");
+        } catch (error) {
+            console.error("Login failed:", error);
+        }
 
         setUserName("");
         setPassword("");
     }
+
     return (
         <main>
             <div className="form-container">

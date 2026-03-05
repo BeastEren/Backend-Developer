@@ -4,11 +4,13 @@ import { useAuth } from '../hooks/useAuth'; //custom hook to access auth context
 // import '../styles/form.scss';
 
 function Register() {
+    const navigate = useNavigate();
+
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { handleRegister, loading } = useAuth(); //custom hook to access auth context
-    const navigate = useNavigate();
+
+    const { user, loading, handleRegister } = useAuth(); //custom hook to access auth context
 
     if (loading) {
         return <h1>Loading...</h1>;
@@ -17,11 +19,13 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        handleRegister(userName, email, password)
-            .then(() => {
-                console.log("Registration successful!");
-                navigate("/login");
-            });
+        try {
+            await handleRegister(userName, email, password);
+            console.log("Registration successful!");
+            navigate("/");
+        } catch (error) {
+            console.error("Registration failed:", error);
+        }
 
         // await axios.post("http://localhost:3000/api/auth/register", {
         //     userName,
