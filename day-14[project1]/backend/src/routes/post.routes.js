@@ -10,5 +10,6 @@ postRouter.post('/', upload.single('image'), identifyUser, postController.create
 postRouter.get('/', identifyUser, postController.getPostController);
 postRouter.get('/details/:postID', identifyUser, postController.getPostDetailsController);
 postRouter.post('/like/:postID', identifyUser, postController.likePostController);
+postRouter.get('/feed', identifyUser, postController.getFeedController);
 
 module.exports = postRouter;

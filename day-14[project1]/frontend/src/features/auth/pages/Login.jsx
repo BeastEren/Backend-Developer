@@ -18,13 +18,13 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            await handleLogin(userName, password);
-            console.log("Login successful!");
-            navigate("/");
-        } catch (error) {
-            console.error("Login failed:", error);
-        }
+        await handleLogin(userName, password)
+            .then(() => {
+                console.log("Login successful!");
+                navigate("/");
+            }).catch((error) => {
+                console.error("Login failed:", error);
+            })
 
         setUserName("");
         setPassword("");

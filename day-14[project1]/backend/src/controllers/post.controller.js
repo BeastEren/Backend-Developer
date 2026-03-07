@@ -71,7 +71,7 @@ async function getPostDetailsController(res, res) {
 
 async function likePostController(req, res) {
     const userName = req.user.userName;
-    console.log(userName)
+    // console.log(userName)
     const postID = req.params.postID;
 
     const isPostExists = await postModel.findById(postID);
@@ -102,9 +102,34 @@ async function likePostController(req, res) {
     })
 }
 
+const getFeedController = async (req, res) => {
+    const user = req.user;
+
+    const getFeed =
+        await Promise.all(
+            (await postModel.find().populate("user").lean())
+                .map(async (post) => {
+                    const isLiked = await likeModel.findOne({
+                        postID: post._id,
+                        userName: user.userName
+                    })
+                    post.isLiked = Boolean(isLiked);
+                    return post
+                }));
+    // Promise.all is used to wait for all the promises to resolve before sending the response. It takes an array of promises and returns a new promise that resolves when all the promises in the array have resolved.
+    // In this case, we are using Promise.all to wait for all the posts to be processed and for the isLiked property to be added to each post before sending the response back to the client.
+    //.lean() is used to convert the Mongoose documents into plain JavaScript objects. This is done to improve performance and reduce memory usage, as Mongoose documents have additional overhead compared to plain objects.
+
+    res.status(200).json({
+        message: 'Feed fetched successfully',
+        getFeed
+    })
+}
+
 module.exports = {
     createPostController,
     getPostController,
     getPostDetailsController,
-    likePostController
+    likePostController,
+    getFeedController
 };
