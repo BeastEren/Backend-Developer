@@ -4,4 +4,22 @@
     width: 100%;
     padding-inline: 1rem;
     padding-block: 0.5rem;
+
+    button {
+        padding: .5rem .8rem;
+        background-color: crimson;
+        color: white;
+        border-radius: .5rem;
+        border: none;
+        cursor: pointer;
+        transition: all .2s ease-in-out;
+
+        &:hover {
+            scale: .95;
+        }
+
+        &:active {
+            scale: .9;
+        }
+    }
 }
