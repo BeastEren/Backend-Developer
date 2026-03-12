@@ -1,6 +1,6 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { PostContext } from "../post.context";
-import { getPosts } from "../services/post.api";
+import { getPosts, createPost, likePost, unLikePost } from "../services/post.api";
 
 export function usePost() {
     const context = useContext(PostContext);
@@ -9,15 +9,62 @@ export function usePost() {
     const handleGetFeed = async () => {
         setLoading(true);
         try {
-            const res = await getPosts();
-            setFeed(res.getFeed);
+            const data = await getPosts();
+            setFeed(data.getFeed);
         } catch (error) {
             console.error("Error fetching feed:", error);
+            throw error;
         }
         finally {
             setLoading(false);
         }
     }
 
-    return { posts, feed, loading, handleGetFeed };
+    const handleCreatePost = async (imageFil, caption) => {
+        setLoading(true);
+        try {
+            const data = await createPost(imageFil, caption);
+            setFeed([data.post, ...feed]);
+        } catch (error) {
+            console.error("Error creating post:", error);
+            throw error;
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
+    const handleLike = async (post) => {
+        // setLoading(true);
+        try {
+            const data = await likePost(post);
+            await handleGetFeed();
+        } catch (error) {
+            console.error("Error liking faled:", error);
+            throw error;
+        }
+        finally {
+            // setLoading(false);
+        }
+    }
+
+    const handleUnLike = async (post) => {
+        // setLoading(true);
+        try {
+            const data = await unLikePost(post);
+            await handleGetFeed();
+        } catch (error) {
+            console.error("Error liking faled:", error);
+            throw error;
+        }
+        finally {
+            // setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        handleGetFeed();
+    }, [])
+
+    return { posts, feed, loading, handleGetFeed, handleCreatePost, handleLike, handleUnLike };
 }

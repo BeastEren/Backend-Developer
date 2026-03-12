@@ -34,7 +34,7 @@ export async function register(userName, email, password) {
 
 export async function getUser() {
     try {
-        const response = await api.get("/user");
+        const response = await api.get("/get-user");
         return response.data;
     } catch (error) {
         console.error("There was an error fetching the user!", error);

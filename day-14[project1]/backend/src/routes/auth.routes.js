@@ -6,6 +6,6 @@ const authRouter = express.Router();
 
 authRouter.post('/register', authController.registerController);
 authRouter.post('/login', authController.loginController);
-authRouter.get('/get-user', verifyToken, authController.getUserController);
+authRouter.get('/get-user', verifyToken, authController.getUserController); //unused
 
 module.exports = authRouter;

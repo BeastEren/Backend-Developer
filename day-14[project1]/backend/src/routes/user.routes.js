@@ -4,8 +4,8 @@ const identifyUser = require('../middlewares/auth.middleware');
 
 const userRoutes = express.Router();
 
-userRoutes.post('/follow/:userName', identifyUser, userController.followUserController)
-userRoutes.post('/unFollow/:userName', identifyUser, userController.unfollowUserController);
-userRoutes.post('/followResponse',identifyUser,userController.followResponseController)
+userRoutes.post('/follow/:userName', identifyUser, userController.followUserController) //unused
+userRoutes.post('/unFollow/:userName', identifyUser, userController.unfollowUserController); //unused
+userRoutes.post('/followResponse', identifyUser, userController.followResponseController) //unused
 
 module.exports = userRoutes;

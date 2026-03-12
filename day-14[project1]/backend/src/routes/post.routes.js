@@ -7,9 +7,10 @@ const postRouter = express.Router();
 const upload = multer({ storage: multer.memoryStorage() })
 
 postRouter.post('/', upload.single('image'), identifyUser, postController.createPostController);
-postRouter.get('/', identifyUser, postController.getPostController);
-postRouter.get('/details/:postID', identifyUser, postController.getPostDetailsController);
+postRouter.get('/', identifyUser, postController.getPostController); //unused
+postRouter.get('/details/:postID', identifyUser, postController.getPostDetailsController); //unused
 postRouter.post('/like/:postID', identifyUser, postController.likePostController);
+postRouter.post('/unLike/:postID', identifyUser, postController.unlikePostController);
 postRouter.get('/feed', identifyUser, postController.getFeedController);
 
 module.exports = postRouter;

@@ -8,7 +8,7 @@ const Feed = () => {
     const { feed, handleGetFeed, loading, handleLike, handleUnLike } = usePost()
 
     useEffect(() => {
-        handleGetFeed()
+        handleGetFeed();
     }, [])
 
     if (loading || !feed) {
