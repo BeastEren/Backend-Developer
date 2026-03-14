@@ -70,6 +70,7 @@ project/
         │   │   └── auth.context.jsx    # [State] user, loading, setUser, setLoading
         │   └── post/
         │       ├── pages/
+        │       │   ├── CreatePost.jsx  # [UI] Create Post
         │       │   └── Feed.jsx        # [UI] Renders feed of all posts
         │       ├── components/
         │       │   └── Post.jsx        # [UI] Single post card (like, comment, share, save icons)
