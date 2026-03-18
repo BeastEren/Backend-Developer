@@ -12,7 +12,10 @@ const Feed = () => {
     }, [])
 
     if (loading || !feed) {
-        return (<main><h1>Feed is loading...</h1></main>)
+        return (<>
+            <Nav />
+            <main><h1>Feed is loading...</h1></main>
+        </>)
     }
     return (
         <main className='feed-page' >

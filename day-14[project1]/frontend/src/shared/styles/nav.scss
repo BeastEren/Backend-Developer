@@ -5,6 +5,19 @@
     padding-inline: 1rem;
     padding-block: 0.5rem;
 
+    .right {
+        display: flex;
+        gap: 1rem;
+
+        .login {
+            background-color: rgb(10, 109, 10);
+        }
+
+        .register {
+            background-color: rgb(255, 94, 0);
+        }
+    }
+
     button {
         padding: .5rem .8rem;
         background-color: crimson;
