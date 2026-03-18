@@ -7,7 +7,7 @@ const userRouter = require('./routes/user.routes');
 
 const app = express();
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'https://backend-developer-beta.vercel.app',
     credentials: true,
 };
 
